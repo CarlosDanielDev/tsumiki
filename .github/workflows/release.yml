@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Print release plan without mutating tags/releases"
+        type: boolean
+        default: false
+  push:
+    branches: [main, master]
+    paths:
+      - "scripts/release.py"
+      - ".github/workflows/release.yml"
+
+jobs:
+  release:
+    name: Cut release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Dry-run release plan
+        if: ${{ inputs.dry-run == true || github.event_name == 'push' }}
+        run: python3 scripts/release.py --dry-run
+
+      - name: Cut release
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.dry-run == false }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/release.py
