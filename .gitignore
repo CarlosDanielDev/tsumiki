@@ -1,0 +1,10 @@
+.DS_Store
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserstate
+manifests/*.json
+!manifests/.gitkeep
+__pycache__/
+*.pyc
+.pytest_cache/
