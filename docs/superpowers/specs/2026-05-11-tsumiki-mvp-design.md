@@ -67,10 +67,19 @@ Tsumiki/
 
 ### 5.2 Module dependency graph
 
-```
-TsumikiCore  ←  TsumikiTheme  ←  TsumikiComponents
-                              ←  TsumikiAnimations
-TsumikiCore  ←  TsumikiServices
+```mermaid
+graph LR
+    Core[TsumikiCore]
+    Theme[TsumikiTheme]
+    Components[TsumikiComponents]
+    Animations[TsumikiAnimations]
+    Services[TsumikiServices]
+    Core --> Theme
+    Core --> Services
+    Theme --> Components
+    Theme --> Animations
+    Core --> Components
+    Core --> Animations
 ```
 
 ### 5.3 Targets (Package.swift)
@@ -256,7 +265,44 @@ scripts/
 }
 ```
 
-### 7.3 Why this saves context
+### 7.3 Pipeline flow
+
+```mermaid
+flowchart LR
+    subgraph Sources
+        A[aquabrew]
+        B[pulselog]
+        C[lucidmate]
+        D[warrantyreminder]
+        E[zeroblock]
+    end
+    subgraph Scanner["scripts/ (Python stdlib)"]
+        SP[scan_project.py]
+        CC[classify_components.py]
+        DO[diff_overlaps.py]
+        BC[build_catalog.py]
+    end
+    subgraph Manifests["manifests/ (gitignored JSON)"]
+        M1[aquabrew.json]
+        M2[pulselog.json]
+        M3[lucidmate.json]
+        M4[warrantyreminder.json]
+        M5[zeroblock.json]
+        MC[_concepts.json]
+        MO[_overlaps.json]
+        MP[_tsumiki_plan.json]
+    end
+    A --> SP --> M1
+    B --> SP --> M2
+    C --> SP --> M3
+    D --> SP --> M4
+    E --> SP --> M5
+    M1 & M2 & M3 & M4 & M5 --> CC --> MC
+    M1 & M2 & M3 & M4 & M5 --> DO --> MO
+    MC & MO --> BC --> MP
+```
+
+### 7.4 Why this saves context
 
 Subagents read `manifests/*.json` (≤30 KB each) instead of hundreds of `.swift`
 files. The architect only opens raw Swift for files referenced in `_overlaps.json`
@@ -281,6 +327,36 @@ contracts — Tsumiki is a library, not an API service).
 **Orchestrator** (`Tsumiki/.claude/CLAUDE.md`) is the only writer of code. Default
 mode is Vibe Coding; switch to Subagents Orchestrator mode for component-port
 waves.
+
+### 8.1 Subagent flow per port wave
+
+```mermaid
+sequenceDiagram
+    participant Orch as Orchestrator
+    participant PM as project-mapper × 5
+    participant CCl as concept-classifier
+    participant OA as overlap-arbiter × N
+    participant TE as theme-extractor
+    participant Arch as architect
+    participant QA as qa
+    participant Docs as docs-analyst
+
+    Orch->>PM: read manifests/<project>.json (parallel)
+    PM-->>Orch: digest per project
+    Orch->>CCl: read all manifests
+    CCl-->>Orch: concept → candidates
+    Orch->>OA: per concept, raw Swift only for candidates (parallel)
+    OA-->>Orch: winner + merged API
+    Orch->>TE: theme_tokens consolidation (once)
+    TE-->>Orch: DefaultTheme palette proposal
+    Orch->>Arch: file layout + public API
+    Arch-->>Orch: blueprint
+    Orch->>QA: test blueprint
+    QA-->>Orch: XCTest cases
+    Orch->>Orch: write tests RED → impl GREEN → refactor
+    Orch->>Docs: end of wave
+    Docs-->>Orch: README + docs/components/<X>.md updated
+```
 
 ## 9. MVP Component Set
 
