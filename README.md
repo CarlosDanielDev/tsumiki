@@ -56,7 +56,8 @@ struct ContentView: View {
   (+ `TsumikiDialogAction`), `TsumikiCard`, `TsumikiButton`, `TsumikiPaywall`
   (+ `TsumikiPaywallFeature`, `TsumikiPaywallPrice`), `TsumikiScannerReticle`
   (+ `TsumikiReticleRectKey`), `TsumikiOnboardingPage`, `TsumikiOnboardingDots`,
-  `TsumikiOnboardingProgressBar`.
+  `TsumikiOnboardingProgressBar`, `TsumikiTextField`
+  (+ `TsumikiTextFieldStyle`, `TsumikiTextFieldValidation`, `TsumikiKeyboardType`).
 - `TsumikiAnimations` — reusable animations + view modifiers (placeholder; populated by Plan C).
 - `TsumikiServices` — analytics, ads, paywall (StoreKit 2), notifications protocols + defaults (placeholder; populated by Plan C).
 
@@ -74,9 +75,9 @@ ContentView().tsumikiTheme(pinkTheme)
 - **P0 — scanner pipeline + manifests:** ✅ done. 5 source projects scanned (115 components mapped across 10 concepts).
 - **P1 — package scaffolding + theme + reference Toast:** ✅ done.
 - **P2 — component port wave:** ✅ done. All 9 concepts shipped (Splash, SettingsRow, Loading, Dialog, Card, Button, Paywall, ScannerReticle, OnboardingKit). `TsumikiOpacity` token landed alongside the scanner reticle.
-- **P3 — TsumikiCatalog + first migration (warrantyreminder):** not started. Plan C to be drafted.
+- **P3 — TsumikiCatalog + first migration (warrantyreminder):** Phase 0 ✅ done (`TsumikiTextField` ported, closes the PRD MVP component set). Catalog + Services + WR migration in Plan C.
 
-51 Swift tests + 18 Python tests, all green. Lint (`scripts/lint_no_hardcoded.py`) clean on `Sources/TsumikiComponents`.
+57 Swift tests + 18 Python tests, all green on iOS sim (51 on macOS host). Lint (`scripts/lint_no_hardcoded.py`) clean on `Sources/TsumikiComponents`.
 
 ## Repo layout
 See `directory-tree.md`.
