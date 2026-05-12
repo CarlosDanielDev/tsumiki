@@ -34,7 +34,8 @@ public extension DefaultTheme {
             textSecondary: .secondary,
             success: .green,
             warning: .yellow,
-            danger: .red
+            danger: .red,
+            scrim: .black.opacity(0.4)
         ),
         typography: TsumikiTypography(
             largeTitle: .largeTitle,
@@ -56,6 +57,7 @@ public extension DefaultTheme {
         t.colors.background = .black
         t.colors.surface    = Color(white: 0.12)
         t.colors.accent     = .teal
+        t.colors.scrim      = .black.opacity(0.6)
         return t
     }()
 }

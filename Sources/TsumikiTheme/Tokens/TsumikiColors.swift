@@ -9,10 +9,12 @@ public struct TsumikiColors: Sendable {
     public var success: Color
     public var warning: Color
     public var danger: Color
+    public var scrim: Color
 
     public init(accent: Color, background: Color, surface: Color,
                 textPrimary: Color, textSecondary: Color,
-                success: Color, warning: Color, danger: Color) {
+                success: Color, warning: Color, danger: Color,
+                scrim: Color = .black.opacity(0.4)) {
         self.accent = accent
         self.background = background
         self.surface = surface
@@ -21,5 +23,6 @@ public struct TsumikiColors: Sendable {
         self.success = success
         self.warning = warning
         self.danger = danger
+        self.scrim = scrim
     }
 }
