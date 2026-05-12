@@ -3,7 +3,10 @@ plugins = []
 [project]
 repo = "CarlosDanielDev/tsumiki"
 base_branch = "master"
-languages = ["swift", "python"]
+languages = [
+    "swift",
+    "python",
+]
 build_command = "/usr/bin/swift build"
 test_command = "/usr/bin/swift test"
 run_command = "/usr/bin/swift run"
@@ -37,10 +40,6 @@ policy = "warn"
 [sessions.completion_gates]
 enabled = true
 
-# Toolchain note: /usr/bin/swift is the Xcode-bundled toolchain.
-# `which swift` resolves to swiftly's Swift 6.1 which is incompatible
-# with the macOS 26 SDK — always pin to /usr/bin/swift in gates.
-
 [[sessions.completion_gates.commands]]
 name = "swift-build"
 run = "/usr/bin/swift build"
@@ -73,6 +72,11 @@ cache_ttl_secs = 300
 auto_merge = false
 merge_method = "squash"
 
+[notifications]
+desktop = true
+slack = false
+slack_rate_limit_per_min = 10
+
 [provider]
 kind = "github"
 issue_filter_labels = ["maestro:ready"]
@@ -81,18 +85,11 @@ auto_merge = false
 merge_method = "squash"
 cache_ttl_secs = 300
 
-[notifications]
-desktop = true
-slack = false
-slack_rate_limit_per_min = 10
-
-# Route P0 to Opus (catalog + plan-C work needs deep reasoning),
-# everything else can ride on Sonnet.
 [models.routing]
+"area:migration" = "opus"
+"priority:P2" = "sonnet"
 "priority:P0" = "opus"
 "priority:P1" = "sonnet"
-"priority:P2" = "sonnet"
-"area:migration" = "opus"
 
 [gates]
 enabled = true
@@ -137,3 +134,27 @@ activity_log_height = 20
 [flags]
 
 [turboquant]
+enabled = true
+bit_width = 4
+strategy = "turboquant"
+apply_to = "both"
+auto_on_overflow = false
+fork_handoff_budget = 4096
+system_prompt_budget = 2048
+knowledge_budget = 4096
+
+[adapt]
+milestone_naming = "ai"
+
+[views]
+agent_graph_enabled = true
+
+[agents]
+default = "claude"
+
+[agents.claude]
+kind = "claude"
+enabled = true
+command = "claude"
+model = "opus"
+permission_mode = "bypassPermissions"
