@@ -157,7 +157,7 @@ Draft this as `docs/superpowers/plans/2026-05-12-tsumiki-mvp-p3.md`. Then execut
 - **Theme-aware only:** Components NEVER use raw `Color(...)`, `.padding(16)`, `.cornerRadius(12)`, etc. Lint blocks merge. Only theme tokens.
 - **UIKit gating:** Render tests use `UIHostingController` and are gated by `#if canImport(UIKit)` so they skip on macOS host. They WILL run on iOS sim via `xcodebuild`.
 - **Public API rules:** `public` everywhere on exported surface. No `@_spi`. No internal singletons.
-- **Commit messages:** Conventional Commits (`feat(...)`, `fix(...)`, `docs(...)`, `chore(...)`). Include `Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>` trailer.
+- **Commit messages:** Conventional Commits (`feat(...)`, `fix(...)`, `docs(...)`, `chore(...)`, `refactor(...)`, `test(...)`). **NEVER** add `Co-Authored-By: Claude …` or `🤖 Generated with Claude Code` trailers — commits and PRs are authored as the human user only. AI assistance is a tool, not a co-author.
 - **No batching:** one concept per commit. Lints + tests run before each commit.
 - **Subagents are read-only.** Only the orchestrator and `subagent-docs-analyst` write files. If you spawn a new subagent, give it the path to manifests/research, NEVER the source-project Swift files (saves context). Exception: `subagent-overlap-arbiter` has a Read tool and CAN read the candidate Swift paths listed in `manifests/_overlaps.json`.
 

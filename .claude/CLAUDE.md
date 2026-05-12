@@ -58,6 +58,17 @@ source project's repo, not here.
   spacing, font, or radius literals are forbidden in `Sources/TsumikiComponents`
   and enforced by `scripts/lint_no_hardcoded.py` in CI.
 
+## Commit / PR authorship — MANDATORY
+- Conventional Commits (`feat(...)`, `fix(...)`, `docs(...)`, `chore(...)`,
+  `refactor(...)`, `test(...)`).
+- **NEVER** add a `Co-Authored-By: Claude …` (or any AI / assistant) trailer
+  to commit messages.
+- **NEVER** add `🤖 Generated with [Claude Code]` (or similar) footers to
+  commits or PR descriptions.
+- The git author is whatever Carlos's `git config` resolves to. Do not
+  override with `--author`. Commits are authored as the human user only —
+  AI assistance is a tool, not a co-author.
+
 ## Caveman mode
 Read `.claude/settings.json`. If `behavior.caveman_mode === true`, apply the
 caveman compression rules to user-facing prose (not to code, commits, or PRs).
