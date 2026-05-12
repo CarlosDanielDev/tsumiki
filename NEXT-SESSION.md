@@ -1,6 +1,8 @@
 # NEXT-SESSION.md — Tsumiki resume guide
 
-**Last updated:** 2026-05-12 08:35 (P2 component wave complete, 51 swift + 18 py tests green)
+**Last updated:** 2026-05-12 17:15 (P2 component wave complete, 51 swift + 18 py tests green; Plan C drafted for P3)
+
+> **Active milestone driver:** [`docs/superpowers/plans/2026-05-12-tsumiki-mvp-p3.md`](docs/superpowers/plans/2026-05-12-tsumiki-mvp-p3.md) — Plan C covers v0.1.0 → v0.3.0 (TsumikiTextField port, TsumikiCatalog example app, TsumikiServices population, warrantyreminder migration).
 
 This file is the single source of truth for what's done, what's next, and the
 exact commands to verify state before resuming. Read it top-to-bottom in a fresh
@@ -100,6 +102,7 @@ python3 -m scripts.lint_no_hardcoded Sources/TsumikiComponents          # exit 0
 - `docs/superpowers/specs/2026-05-11-tsumiki-mvp-design.md` — MVP design with mermaid diagrams (module graph, scanner pipeline, subagent flow).
 - `docs/superpowers/plans/2026-05-11-tsumiki-mvp-p0-p1.md` — Plan A (executed).
 - `docs/superpowers/plans/2026-05-11-tsumiki-mvp-p2.md` — Plan B (executed in full: Tasks 1-9 + Card all shipped).
+- `docs/superpowers/plans/2026-05-12-tsumiki-mvp-p3.md` — Plan C (drafted, **active milestone driver**: TextField + Catalog + Services + WR migration).
 
 ---
 
@@ -107,25 +110,18 @@ python3 -m scripts.lint_no_hardcoded Sources/TsumikiComponents          # exit 0
 
 ### Plan C — Catalog app, services population, first migration
 
-Draft this as `docs/superpowers/plans/2026-05-12-tsumiki-mvp-p3.md`. Then execute.
+**Drafted:** `docs/superpowers/plans/2026-05-12-tsumiki-mvp-p3.md`. Execute next.
 
-1. **`Examples/TsumikiCatalog/`** — minimal SwiftUI app browsing every component
-   with a theme picker (light / dark / custom). Doubles as a visual smoke test
-   while no snapshot tests exist.
-2. **`TsumikiServices` population:**
-   - `TsumikiAnalytics` (protocol + no-op default)
-   - `TsumikiAdsCoordinator` (protocol + no-op default)
-   - `TsumikiPaywallController` (StoreKit 2 + RC adapter, drives
-     `TsumikiPaywall`'s state)
-   - `TsumikiNotifications` (protocol + UNUserNotificationCenter default)
-3. **`warrantyreminder` migration** as the first consumer (smallest surface):
-   - Add Tsumiki SwiftPM URL.
-   - Replace `WRDialog → TsumikiDialog`, `WRToast → TsumikiToast`,
-     `WRSettingsRow → TsumikiSettingsRow`, `SplashView → TsumikiSplash`,
-     `PaywallView → TsumikiPaywall` (+ controller),
-     `OnboardingContainerView` page bodies → `TsumikiOnboardingPage`.
-   - Verify no visual regression manually (no snapshot tests in MVP).
-   - Write `docs/MIGRATION.md` from the experience.
+Plan C splits the work into four releasable tags:
+
+| Tag | Phase | Scope |
+|---|---|---|
+| **v0.1.0** | Phase 0 | TsumikiTextField port (arbiter spec → TDD port). Carry-over from P2. |
+| **v0.2.0** | Phase 1 + 2 | `Examples/TsumikiCatalog` example app + TsumikiServices protocol surfaces (Analytics, Ads, Notifications, PaywallController) with no-op defaults. |
+| **v0.2.1** | Phase 2.5 | StoreKit 2 implementation of `TsumikiPaywallController` behind the protocol. |
+| **v0.3.0** | Phase 3 | `warrantyreminder` migration (8 concept swaps, manual visual diff) + `docs/MIGRATION.md`. |
+
+Read the plan top-to-bottom before starting; it includes per-phase blockers, acceptance criteria, and a recommended migration order for WR.
 
 ### Followups noted along the way (small, can land anytime)
 
