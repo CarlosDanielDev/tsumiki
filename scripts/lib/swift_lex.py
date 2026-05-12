@@ -63,7 +63,7 @@ def extract_symbols(source: str) -> List[Dict[str, Any]]:
     out: List[Dict[str, Any]] = []
     for m in _DECL_RE.finditer(source):
         vis = m.group("vis") or "internal"
-        if vis != "public":
+        if vis in ("private", "fileprivate"):
             continue
         kind_raw = m.group("kind")
         conforms = m.group("conforms")
