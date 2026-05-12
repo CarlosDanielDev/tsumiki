@@ -29,4 +29,18 @@ final class TsumikiThemeTokenTests: XCTestCase {
         XCTAssertEqual(s.radius, 4)
         XCTAssertEqual(s.y, 2)
     }
+
+    func testOpacityDefaultsCoverScrimOverlayDisabled() {
+        let o = TsumikiOpacity()
+        XCTAssertEqual(o.scrim, 0.5)
+        XCTAssertEqual(o.overlay, 0.85)
+        XCTAssertEqual(o.disabled, 0.4)
+    }
+
+    func testOpacityCustomInitOverridesDefaults() {
+        let o = TsumikiOpacity(scrim: 0.7, overlay: 0.9, disabled: 0.3)
+        XCTAssertEqual(o.scrim, 0.7)
+        XCTAssertEqual(o.overlay, 0.9)
+        XCTAssertEqual(o.disabled, 0.3)
+    }
 }

@@ -6,15 +6,18 @@ public struct DefaultTheme: TsumikiTheme {
     public var spacing: TsumikiSpacing
     public var radius: TsumikiRadius
     public var shadow: TsumikiShadow
+    public var opacity: TsumikiOpacity
 
     public init(colors: TsumikiColors, typography: TsumikiTypography,
                 spacing: TsumikiSpacing, radius: TsumikiRadius,
-                shadow: TsumikiShadow) {
+                shadow: TsumikiShadow,
+                opacity: TsumikiOpacity = TsumikiOpacity()) {
         self.colors = colors
         self.typography = typography
         self.spacing = spacing
         self.radius = radius
         self.shadow = shadow
+        self.opacity = opacity
     }
 
     public func with<V>(_ keyPath: WritableKeyPath<DefaultTheme, V>, _ value: V) -> DefaultTheme {

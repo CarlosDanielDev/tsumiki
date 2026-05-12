@@ -19,4 +19,15 @@ final class DefaultThemeTests: XCTestCase {
         XCTAssertEqual(DefaultTheme.light.spacing.lg, 16)
         XCTAssertEqual(DefaultTheme.light.spacing.xxl, 32)
     }
+
+    func testOpacityTokenIsExposedOnLightAndDark() {
+        XCTAssertEqual(DefaultTheme.light.opacity.disabled, 0.4)
+        XCTAssertEqual(DefaultTheme.dark.opacity.scrim, 0.5)
+    }
+
+    func testOpacityOverrideViaWithKeyPath() {
+        let modified = DefaultTheme.light.with(\.opacity.disabled, 0.25)
+        XCTAssertEqual(modified.opacity.disabled, 0.25)
+        XCTAssertEqual(DefaultTheme.light.opacity.disabled, 0.4)
+    }
 }

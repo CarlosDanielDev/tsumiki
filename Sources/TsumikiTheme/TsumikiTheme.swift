@@ -4,4 +4,5 @@ public protocol TsumikiTheme: Sendable {
     var spacing:    TsumikiSpacing     { get }
     var radius:     TsumikiRadius      { get }
     var shadow:     TsumikiShadow      { get }
+    var opacity:    TsumikiOpacity     { get }
 }
