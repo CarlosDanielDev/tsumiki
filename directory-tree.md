@@ -20,10 +20,12 @@ docs/components/Paywall.md
 docs/components/ScannerReticle.md
 docs/components/SettingsRow.md
 docs/components/Splash.md
+docs/components/TextField.md
 docs/components/Toast.md
 docs/PRD.md
 docs/superpowers/plans/2026-05-11-tsumiki-mvp-p0-p1.md
 docs/superpowers/plans/2026-05-11-tsumiki-mvp-p2.md
+docs/superpowers/plans/2026-05-12-tsumiki-mvp-p3.md
 docs/superpowers/research/arbiters/Button.md
 docs/superpowers/research/arbiters/CameraScan.md
 docs/superpowers/research/arbiters/Dialog.md
@@ -32,6 +34,7 @@ docs/superpowers/research/arbiters/Onboarding.md
 docs/superpowers/research/arbiters/Paywall.md
 docs/superpowers/research/arbiters/SettingsRow.md
 docs/superpowers/research/arbiters/Splash.md
+docs/superpowers/research/arbiters/TextField.md
 docs/superpowers/research/mappers/aquabrew.md
 docs/superpowers/research/mappers/lucidmate.md
 docs/superpowers/research/mappers/pulselog.md
@@ -95,6 +98,8 @@ Sources/TsumikiComponents/Scanner/TsumikiScannerReticle.swift
 Sources/TsumikiComponents/SettingsRow/TsumikiSettingsRow.swift
 Sources/TsumikiComponents/Splash/TsumikiSplash.swift
 Sources/TsumikiComponents/Splash/TsumikiSplashModifier.swift
+Sources/TsumikiComponents/TextField/TsumikiTextField.swift
+Sources/TsumikiComponents/TextField/TsumikiTextFieldStyle.swift
 Sources/TsumikiComponents/Toast/TsumikiToast.swift
 Sources/TsumikiComponents/Toast/TsumikiToastModifier.swift
 Sources/TsumikiCore/Empty.swift
@@ -119,6 +124,7 @@ Tests/TsumikiComponentsTests/TsumikiPaywallTests.swift
 Tests/TsumikiComponentsTests/TsumikiScannerReticleTests.swift
 Tests/TsumikiComponentsTests/TsumikiSettingsRowTests.swift
 Tests/TsumikiComponentsTests/TsumikiSplashTests.swift
+Tests/TsumikiComponentsTests/TsumikiTextFieldTests.swift
 Tests/TsumikiComponentsTests/TsumikiToastTests.swift
 Tests/TsumikiCoreTests/TsumikiCoreTests.swift
 Tests/TsumikiServicesTests/TsumikiServicesTests.swift
