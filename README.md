@@ -48,12 +48,17 @@ struct ContentView: View {
 
 ## Modules
 - `TsumikiCore` — shared protocols + env keys.
-- `TsumikiTheme` — `TsumikiTheme` protocol + `DefaultTheme` + tokens + env injection.
-- `TsumikiComponents` — SwiftUI components.
-- `TsumikiAnimations` — reusable animations + view modifiers.
-- `TsumikiServices` — analytics, ads, paywall, notifications protocols + defaults.
+- `TsumikiTheme` — `TsumikiTheme` protocol, `DefaultTheme.light/.dark`, tokens
+  (colours / typography / spacing / radius / shadow / scrim), env injection,
+  `.with(\\.kp, value)` override helper.
+- `TsumikiComponents` — `TsumikiToast`, `TsumikiSplash`, `TsumikiSettingsRow`,
+  `TsumikiLoading` + `TsumikiSkeleton` + `.tsumikiShimmer()`, `TsumikiDialog`
+  (+ `TsumikiDialogAction`), `TsumikiCard`, `TsumikiButton`, `TsumikiPaywall`
+  (+ `TsumikiPaywallFeature`, `TsumikiPaywallPrice`).
+- `TsumikiAnimations` — reusable animations + view modifiers (placeholder; populated by Plan B continuation).
+- `TsumikiServices` — analytics, ads, paywall (StoreKit 2), notifications protocols + defaults (placeholder; populated by Plan C).
 
-See `docs/PRD.md` for scope and `docs/components/` for per-component reference.
+Per-component docs: `docs/components/`. Scope: `docs/PRD.md`. Design + plans: `docs/superpowers/`.
 
 ## Custom theme
 
@@ -64,9 +69,12 @@ ContentView().tsumikiTheme(pinkTheme)
 
 ## Status
 
-P0 + P1 complete: scanner pipeline, modular package skeleton, full TsumikiTheme,
-reference TsumikiToast component. Plan B (component port wave) and Plan C
-(catalog + first migration) tracked in `docs/superpowers/plans/`.
+- **P0 — scanner pipeline + manifests:** ✅ done. 5 source projects scanned (115 components mapped across 10 concepts).
+- **P1 — package scaffolding + theme + reference Toast:** ✅ done.
+- **P2 — component port wave:** 7 of 9 concepts done (Splash, SettingsRow, Loading, Dialog, Card, Button, Paywall). Remaining: ScannerReticle, OnboardingKit. See `docs/superpowers/plans/2026-05-11-tsumiki-mvp-p2.md` Tasks 7 + 9.
+- **P3 — TsumikiCatalog + first migration (warrantyreminder):** not started. Plan C to be drafted.
+
+30 Swift tests + 18 Python tests, all green. Lint (`scripts/lint_no_hardcoded.py`) clean on `Sources/TsumikiComponents`.
 
 ## Repo layout
 See `directory-tree.md`.
