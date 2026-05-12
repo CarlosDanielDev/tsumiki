@@ -1,6 +1,6 @@
 # NEXT-SESSION.md — Tsumiki resume guide
 
-**Last updated:** 2026-05-11 23:40 (autonomous run, ~17 commits, 30 swift + 18 py tests green)
+**Last updated:** 2026-05-12 08:35 (P2 component wave complete, 51 swift + 18 py tests green)
 
 This file is the single source of truth for what's done, what's next, and the
 exact commands to verify state before resuming. Read it top-to-bottom in a fresh
@@ -12,6 +12,9 @@ context and you have everything you need.
 
 ```
 git log --oneline (most recent first):
+6a7479e feat(components): add TsumikiOnboardingKit (page + dots + progress bar)
+4612dc0 feat(components): add TsumikiScannerReticle (overlay chrome)
+fe22176 feat(theme): add TsumikiOpacity (scrim/overlay/disabled)
 7e96728 docs: refresh README modules + status, regenerate directory-tree
 1a9b5d6 feat(components): add TsumikiPaywall + value types (Feature, Price)
 14a6eea feat(components): add TsumikiButton with full Style/Size/Shape/Layout matrix
@@ -32,15 +35,15 @@ ad2ed4f docs: add Tsumiki MVP design spec
 ```
 
 Branch: `master`. Untracked but pre-existing (not touched by Tsumiki work):
-`tsumiki.xcodeproj/`, `tsumiki/tsumiki.swift`, `tsumikiTests/tsumikiTests.swift`.
-These are Carlos's earlier Xcode skeleton — leave them alone unless asked.
+`tsumiki.xcodeproj/`. That's Carlos's earlier Xcode skeleton — leave it alone
+unless asked.
 
 ## Verify state in a fresh session
 
 ```bash
 # All four MUST pass before adding anything new.
 /usr/bin/swift build                                                    # iOS 17 + macOS 14, all 5 targets
-/usr/bin/swift test                                                     # 30 tests green
+/usr/bin/swift test                                                     # 51 tests green
 python3 -m unittest discover scripts/tests                              # 18 tests green
 python3 -m scripts.lint_no_hardcoded Sources/TsumikiComponents          # exit 0
 ```
@@ -62,11 +65,12 @@ python3 -m scripts.lint_no_hardcoded Sources/TsumikiComponents          # exit 0
 
 ### P1 — Package scaffolding + Theme + reference Toast ✅
 - 5 modular targets: TsumikiCore, TsumikiTheme, TsumikiComponents, TsumikiAnimations, TsumikiServices.
-- TsumikiTheme: 9-slot colours (incl. scrim), typography, spacing, radius, shadow.
+- TsumikiTheme tokens: 9-slot colours (incl. scrim), typography, spacing,
+  radius, shadow, **opacity** (scrim / overlay / disabled).
 - DefaultTheme.light / .dark, `.with(\.kp, value)` override helper.
 - TsumikiToast + `.tsumikiToast(isPresented:)` modifier.
 
-### P2 — Component port wave (7 of 9 concepts) ✅
+### P2 — Component port wave (9 of 9 concepts) ✅
 | # | Concept | Files | Tests | Doc |
 |---|---|---|---|---|
 | 1 | Splash | `Sources/TsumikiComponents/Splash/` | TsumikiSplashTests | `docs/components/Splash.md` |
@@ -76,6 +80,8 @@ python3 -m scripts.lint_no_hardcoded Sources/TsumikiComponents          # exit 0
 | 5 | Card | `Sources/TsumikiComponents/Card/` | TsumikiCardTests | `docs/components/Card.md` |
 | 6 | Button | `Sources/TsumikiComponents/Button/` | TsumikiButtonTests | `docs/components/Button.md` |
 | 7 | Paywall | `Sources/TsumikiComponents/Paywall/` | TsumikiPaywallTests | `docs/components/Paywall.md` |
+| 8 | ScannerReticle (+ opacity token) | `Sources/TsumikiComponents/Scanner/` | TsumikiScannerReticleTests | `docs/components/ScannerReticle.md` |
+| 9 | OnboardingKit (Page + Dots + ProgressBar) | `Sources/TsumikiComponents/Onboarding/` | TsumikiOnboardingTests | `docs/components/Onboarding.md` |
 
 ### Subagent infrastructure ✅
 - `.claude/CLAUDE.md` — orchestrator playbook (Vibe vs Subagents modes).
@@ -86,97 +92,74 @@ python3 -m scripts.lint_no_hardcoded Sources/TsumikiComponents          # exit 0
 ### Research persistence ✅
 - `docs/superpowers/research/mappers/<project>.md` — one digest per source app.
 - `docs/superpowers/research/arbiters/<concept>.md` — one API spec per concept
-  (Button, CameraScan, Dialog, Loading, Paywall, SettingsRow, Splash). The
-  arbiter spec for each concept is the source of truth for the matching port.
+  (Button, CameraScan, Dialog, Loading, Onboarding, Paywall, SettingsRow,
+  Splash). The arbiter spec for each concept is the source of truth for the
+  matching port.
 
 ### Spec + Plans ✅
 - `docs/superpowers/specs/2026-05-11-tsumiki-mvp-design.md` — MVP design with mermaid diagrams (module graph, scanner pipeline, subagent flow).
 - `docs/superpowers/plans/2026-05-11-tsumiki-mvp-p0-p1.md` — Plan A (executed).
-- `docs/superpowers/plans/2026-05-11-tsumiki-mvp-p2.md` — Plan B (Tasks 1-6 + Card executed; 7 + 9 remain).
+- `docs/superpowers/plans/2026-05-11-tsumiki-mvp-p2.md` — Plan B (executed in full: Tasks 1-9 + Card all shipped).
 
 ---
 
 ## What's next (in priority order)
 
-### Immediate: finish Plan B (2 concepts left)
+### Plan C — Catalog app, services population, first migration
 
-#### Plan B Task 7: TsumikiOpacity + TsumikiScannerReticle
+Draft this as `docs/superpowers/plans/2026-05-12-tsumiki-mvp-p3.md`. Then execute.
 
-**Spec:** `docs/superpowers/research/arbiters/CameraScan.md`. **Strategy: (c) overlay chrome only.**
-
-Sub-task 7a — extend theme:
-- Create `Sources/TsumikiTheme/Tokens/TsumikiOpacity.swift`:
-  ```swift
-  public struct TsumikiOpacity: Sendable {
-      public var scrim: CGFloat       // default 0.5
-      public var overlay: CGFloat     // default 0.85
-      public var disabled: CGFloat    // default 0.4
-      public init(scrim: CGFloat = 0.5, overlay: CGFloat = 0.85, disabled: CGFloat = 0.4)
-  }
-  ```
-- Add `var opacity: TsumikiOpacity { get }` to `TsumikiTheme` protocol.
-- Add stored `public var opacity: TsumikiOpacity` to `DefaultTheme` + thread through init.
-- Update light/dark to use defaults.
-- Update `TsumikiButton` to use `theme.opacity.disabled` instead of inline `0.4` literal (currently uses `theme.opacity_disabled` private extension — replace).
-- Tests + commit `feat(theme): add TsumikiOpacity (scrim/overlay/disabled)`.
-
-Sub-task 7b — TsumikiScannerReticle (per arbiter spec):
-- `TsumikiScannerReticle<Instructions, Status>` with Shape (square/rectangle/fill), State (idle/scanning/processing/success/error), CornerStyle (brackets/continuous/none).
-- Plain-string convenience overload where `Instructions == Text, Status == Text`.
-- `TsumikiReticleRectKey: PreferenceKey` exposing the reticle CGRect + a `normalized(in:)` helper for AVFoundation ROI.
-- Cutout via `Canvas` + `.destinationOut` (lucidmate's pattern). Don't forget `.compositingGroup()`.
-- Theme tokens: accent/success/warning/danger (state-driven stroke), textPrimary, background (scrim base), spacing.md/lg/xl, radius.md, typography.body/caption, opacity.scrim.
-
-#### Plan B Task 9: OnboardingKit
-
-**No arbiter spec written.** Concept has 19 candidates across aquabrew (5) + pulselog (10) + warrantyreminder (2) + zeroblock (2). Spawn an arbiter subagent first (model the call after the 7 already done — see `docs/superpowers/research/arbiters/Button.md` for shape).
-
-Three views to ship in one task:
-- `TsumikiOnboardingPage(illustration:title:body:primaryAction:secondaryAction:)`
-- `TsumikiOnboardingDots(total:current:accentTint:)`
-- `TsumikiOnboardingProgressBar(progress: Double)`
-
-Likely candidate to study first: `aquabrew/Views/Onboarding/OnboardingPageView.swift` (427 LOC — the richest) and `pulselog/Views/Onboarding/OnboardingPageView.swift` (95 LOC — the cleanest). Pulselog is also worth skimming for the Dots and ProgressBar primitives (`OnboardingDotIndicator.swift`, `OnboardingProgressBar.swift`).
-
-### After P2 wraps: draft Plan C
-
-`docs/superpowers/plans/2026-05-11-tsumiki-mvp-p3.md` should cover:
-
-1. `Examples/TsumikiCatalog/` — minimal SwiftUI app browsing every component
-   with a theme picker (light/dark/custom). Doubles as a visual smoke test.
-2. `TsumikiServices` population:
+1. **`Examples/TsumikiCatalog/`** — minimal SwiftUI app browsing every component
+   with a theme picker (light / dark / custom). Doubles as a visual smoke test
+   while no snapshot tests exist.
+2. **`TsumikiServices` population:**
    - `TsumikiAnalytics` (protocol + no-op default)
    - `TsumikiAdsCoordinator` (protocol + no-op default)
-   - `TsumikiPaywallController` (StoreKit 2 + RC adapter, drives `TsumikiPaywall`'s state)
+   - `TsumikiPaywallController` (StoreKit 2 + RC adapter, drives
+     `TsumikiPaywall`'s state)
    - `TsumikiNotifications` (protocol + UNUserNotificationCenter default)
-3. `warrantyreminder` migration as the first consumer (smallest surface):
+3. **`warrantyreminder` migration** as the first consumer (smallest surface):
    - Add Tsumiki SwiftPM URL.
-   - Replace WRDialog → TsumikiDialog, WRToast → TsumikiToast,
-     WRSettingsRow → TsumikiSettingsRow, SplashView → TsumikiSplash,
-     PaywallView → TsumikiPaywall (plus a controller).
+   - Replace `WRDialog → TsumikiDialog`, `WRToast → TsumikiToast`,
+     `WRSettingsRow → TsumikiSettingsRow`, `SplashView → TsumikiSplash`,
+     `PaywallView → TsumikiPaywall` (+ controller),
+     `OnboardingContainerView` page bodies → `TsumikiOnboardingPage`.
    - Verify no visual regression manually (no snapshot tests in MVP).
    - Write `docs/MIGRATION.md` from the experience.
 
-### Followups noted along the way
+### Followups noted along the way (small, can land anytime)
 
-- `manifests/HOWTO.md` — write a tiny note on how to re-scan when source apps change. Just a one-liner per project + the aggregator commands.
-- Replace `TsumikiButton`'s `theme.opacity_disabled` private extension with `theme.opacity.disabled` once `TsumikiOpacity` lands.
-- `TsumikiDialog` header pulse animation (the original AquaBrew/WR icons had pulsing) was deliberately omitted — revisit if/when adding `theme.animations` tokens.
-- `colors.skeleton` follow-up (currently `colors.surface` doubles for skeleton fill — invisible on light themes if surface ≈ background).
-- L10N strategy: `TsumikiLoading.Cancel`, `TsumikiPaywall.Restore Purchases`, `TsumikiDialogAction.cancel("Cancel")` defaults are all hardcoded English. Pick a strategy framework-wide before localising.
-- `TsumikiOnboardingKit` may want a `TsumikiOnboardingContainer` that takes `[TsumikiOnboardingPage]` + handles paging + dots + progress bar in one. Add only if 2+ apps actually compose them all together.
+- **`manifests/HOWTO.md`** — write a tiny note on how to re-scan when source
+  apps change. Just a one-liner per project + the aggregator commands.
+- **`TsumikiDialog` header pulse animation** (the original AquaBrew/WR icons
+  had pulsing) was deliberately omitted — revisit if/when adding
+  `theme.animations` tokens.
+- **`colors.skeleton`** follow-up (currently `colors.surface` doubles for
+  skeleton fill — invisible on light themes if surface ≈ background).
+- **L10N strategy** — `TsumikiLoading.Cancel`, `TsumikiPaywall.Restore
+  Purchases`, `TsumikiDialogAction.cancel("Cancel")`, and the onboarding
+  CTAs are all hardcoded English. Pick a framework-wide strategy
+  (`LocalizedStringKey` initializers vs Bundle lookup) before localising.
+- **`TsumikiOnboardingContainer`** — only worth adding if 2+ apps actually
+  compose Page + Dots + ProgressBar identically. Defer until measured.
+- **`TsumikiScannerReticle` glow ring** — aquabrew-only decoration was
+  omitted. If design pushes back, add `glow: Bool = false` flag in v2
+  rather than re-architecting.
+- **`TsumikiPage` reduce-motion test coverage** — only the page entrance
+  is reduce-motion-gated; the `accessibilityReduceMotion` toggle path is
+  not currently asserted.
 
 ---
 
 ## Conventions (read before editing)
 
-- **TDD:** every component port writes failing tests first, runs to confirm fail, then writes the impl. See any of the 7 ported concepts' commit history for the pattern.
+- **TDD:** every component port writes failing tests first, runs to confirm fail, then writes the impl. See any of the 9 ported concepts' commit history for the pattern.
 - **Theme-aware only:** Components NEVER use raw `Color(...)`, `.padding(16)`, `.cornerRadius(12)`, etc. Lint blocks merge. Only theme tokens.
 - **UIKit gating:** Render tests use `UIHostingController` and are gated by `#if canImport(UIKit)` so they skip on macOS host. They WILL run on iOS sim via `xcodebuild`.
 - **Public API rules:** `public` everywhere on exported surface. No `@_spi`. No internal singletons.
 - **Commit messages:** Conventional Commits (`feat(...)`, `fix(...)`, `docs(...)`, `chore(...)`). Include `Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>` trailer.
 - **No batching:** one concept per commit. Lints + tests run before each commit.
-- **Subagents are read-only.** Only the orchestrator and `subagent-docs-analyst` write files. If you spawn a new subagent, give it the path to manifests/research, NEVER the source-project Swift files (saves context).
+- **Subagents are read-only.** Only the orchestrator and `subagent-docs-analyst` write files. If you spawn a new subagent, give it the path to manifests/research, NEVER the source-project Swift files (saves context). Exception: `subagent-overlap-arbiter` has a Read tool and CAN read the candidate Swift paths listed in `manifests/_overlaps.json`.
 
 ---
 
@@ -193,4 +176,4 @@ orchestrator reads this once per session). Off by default.
 - **`swift test` fails with "could not build module 'CoreFoundation'":** wrong toolchain. Use `/usr/bin/swift`.
 - **`xcodebuild` complains about "scheme Tsumiki-Package":** the pre-existing `tsumiki.xcodeproj` shadows package detection. Either delete the .xcodeproj (only if Carlos OKs it — it predates Tsumiki) or just use `/usr/bin/swift test` for everything.
 - **Lint flags a literal in `DefaultTheme.swift`:** scope is wrong. Lint should only target `Sources/TsumikiComponents`. Theme legitimately uses `Color.black.opacity(...)` etc.
-- **A test references `theme.opacity.disabled` and fails:** TsumikiOpacity isn't shipped yet — Plan B Task 7 sub-task 7a does it. Until then, `TsumikiButton` uses a private extension fallback (`theme.opacity_disabled` returning 0.4).
+- **A test references `theme.opacity.disabled` and fails:** Fine — `TsumikiOpacity` is shipped. If a test still uses the old `theme.opacity_disabled` private extension, that extension was removed in `fe22176` — update the test to use `theme.opacity.disabled`.
