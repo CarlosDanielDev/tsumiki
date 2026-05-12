@@ -62,6 +62,23 @@ struct ContentView: View {
 
 Per-component docs: `docs/components/`. Scope: `docs/PRD.md`. Design + plans: `docs/superpowers/`.
 
+## Catalog (showcase app)
+
+`Examples/TsumikiCatalog/` is a SwiftUI app that browses every shipped
+component with a theme picker (Light / Dark / Sakura). See
+[`Examples/TsumikiCatalog/README.md`](Examples/TsumikiCatalog/README.md) for
+build and run instructions.
+
+## Releasing
+
+`scripts/release.py` automates semver bump → tag → GitHub Release based on
+Conventional Commits since the last tag. See [CHANGELOG.md](CHANGELOG.md).
+
+```bash
+python3 scripts/release.py --dry-run    # preview
+python3 scripts/release.py              # cut release (requires gh + clean tree)
+```
+
 ## Custom theme
 
 ```swift
