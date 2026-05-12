@@ -15,7 +15,9 @@ docs/components/Button.md
 docs/components/Card.md
 docs/components/Dialog.md
 docs/components/Loading.md
+docs/components/Onboarding.md
 docs/components/Paywall.md
+docs/components/ScannerReticle.md
 docs/components/SettingsRow.md
 docs/components/Splash.md
 docs/components/Toast.md
@@ -26,6 +28,7 @@ docs/superpowers/research/arbiters/Button.md
 docs/superpowers/research/arbiters/CameraScan.md
 docs/superpowers/research/arbiters/Dialog.md
 docs/superpowers/research/arbiters/Loading.md
+docs/superpowers/research/arbiters/Onboarding.md
 docs/superpowers/research/arbiters/Paywall.md
 docs/superpowers/research/arbiters/SettingsRow.md
 docs/superpowers/research/arbiters/Splash.md
@@ -81,9 +84,14 @@ Sources/TsumikiComponents/Dialog/TsumikiDialogModifier.swift
 Sources/TsumikiComponents/Loading/TsumikiLoading.swift
 Sources/TsumikiComponents/Loading/TsumikiShimmerModifier.swift
 Sources/TsumikiComponents/Loading/TsumikiSkeleton.swift
+Sources/TsumikiComponents/Onboarding/TsumikiOnboardingDots.swift
+Sources/TsumikiComponents/Onboarding/TsumikiOnboardingPage.swift
+Sources/TsumikiComponents/Onboarding/TsumikiOnboardingProgressBar.swift
 Sources/TsumikiComponents/Paywall/TsumikiPaywall.swift
 Sources/TsumikiComponents/Paywall/TsumikiPaywallFeature.swift
 Sources/TsumikiComponents/Paywall/TsumikiPaywallPrice.swift
+Sources/TsumikiComponents/Scanner/TsumikiReticleRectKey.swift
+Sources/TsumikiComponents/Scanner/TsumikiScannerReticle.swift
 Sources/TsumikiComponents/SettingsRow/TsumikiSettingsRow.swift
 Sources/TsumikiComponents/Splash/TsumikiSplash.swift
 Sources/TsumikiComponents/Splash/TsumikiSplashModifier.swift
@@ -95,6 +103,7 @@ Sources/TsumikiTheme/DefaultTheme.swift
 Sources/TsumikiTheme/ThemeEnvironment.swift
 Sources/TsumikiTheme/Tokens/ShadowStyle.swift
 Sources/TsumikiTheme/Tokens/TsumikiColors.swift
+Sources/TsumikiTheme/Tokens/TsumikiOpacity.swift
 Sources/TsumikiTheme/Tokens/TsumikiRadius.swift
 Sources/TsumikiTheme/Tokens/TsumikiShadow.swift
 Sources/TsumikiTheme/Tokens/TsumikiSpacing.swift
@@ -105,7 +114,9 @@ Tests/TsumikiComponentsTests/TsumikiButtonTests.swift
 Tests/TsumikiComponentsTests/TsumikiCardTests.swift
 Tests/TsumikiComponentsTests/TsumikiDialogTests.swift
 Tests/TsumikiComponentsTests/TsumikiLoadingTests.swift
+Tests/TsumikiComponentsTests/TsumikiOnboardingTests.swift
 Tests/TsumikiComponentsTests/TsumikiPaywallTests.swift
+Tests/TsumikiComponentsTests/TsumikiScannerReticleTests.swift
 Tests/TsumikiComponentsTests/TsumikiSettingsRowTests.swift
 Tests/TsumikiComponentsTests/TsumikiSplashTests.swift
 Tests/TsumikiComponentsTests/TsumikiToastTests.swift

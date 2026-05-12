@@ -74,7 +74,7 @@ public struct TsumikiButton: View {
                 .foregroundStyle(foregroundColor)
                 .overlay(strokeOverlay)
                 .clipShape(clipShape)
-                .opacity(isEnabled ? 1.0 : theme.opacity_disabled)
+                .opacity(isEnabled ? 1.0 : theme.opacity.disabled)
                 .overlay(alignment: .topTrailing) { badgeView }
         }
         .buttonStyle(.plain)
@@ -197,9 +197,4 @@ public struct TsumikiButton: View {
         case .circle:  AnyShape(Circle())
         }
     }
-}
-
-private extension TsumikiTheme {
-    /// Convenience: 0.4 disabled opacity (TsumikiOpacity token planned for Plan B Task 7).
-    var opacity_disabled: Double { 0.4 }
 }
